@@ -28,7 +28,11 @@ public class Track {
     @Column(name = "medium")
     private String medium = null;
 
-    public Post(String title, String artist, String genre, Integer releaseYear, String filename, String medium) {
+    public Track() {
+
+    }
+
+    public Track(String title, String artist, String genre, Integer releaseYear, String filename, String medium) {
 
         this.title = title;
         this.artist = artist;
