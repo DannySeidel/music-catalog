@@ -23,17 +23,11 @@ public class MusicController {
     }
 
     @GetMapping("/tracks")
-    public ResponseEntity<List<Track>> getAllTracks(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<Track>> getAllTracks() {
 
         try {
 
-            List<Track> tracks = new ArrayList<Track>();
-
-            if (title == null) {
-                tracks.addAll(musicRepository.findAll());
-            } else {
-                tracks.addAll(musicRepository.findByTitleContaining(title));
-            }
+            List<Track> tracks = new ArrayList<Track>(musicRepository.findAll());
 
             if (tracks.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
