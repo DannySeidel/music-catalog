@@ -1,0 +1,24 @@
+-------GET-------
+/api
+--> get all tracks
+
+/api/{y}/{x}
+--> get all tracks with x (x = value of title, artist, genre, releaseYear or medium)
+--> y = filter by title, artist, genre, release or medium
+
+-------POST-------
+/api
+--> add new Track
+--> post-body example:
+{"id":1,"title":"exampleTitle","artist":"exampleArtist","genre":"rock","releaseYear":2006,"filename":"exampleSong.mp3","medium":"CD"}
+--> id not required
+--> filename must be unique
+
+-------PUT-------
+/api/{x}?title=newtitle&releaseYear=2010
+--> changing Track properties by Id (x = id !required!)
+--> query: not required, possible to change all properties except Id
+
+-------DELETE-------
+/api/{x}
+--> deleting Track by Id (x = id)

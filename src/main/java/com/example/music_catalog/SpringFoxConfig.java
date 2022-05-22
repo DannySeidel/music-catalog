@@ -1,4 +1,4 @@
-package dhbw.catalog.music.music_catalog;
+package com.example.music_catalog;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
