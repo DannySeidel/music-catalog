@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class MusicController {
 
-    private MusicRepository musicRepository;
+    private final MusicRepository musicRepository;
 
     public MusicController(MusicRepository musicRepository) {
         this.musicRepository = musicRepository;
@@ -40,19 +40,91 @@ public class MusicController {
         }
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/track/{id}")
     public ResponseEntity<Track> getTrackById(@PathVariable("id") long id) {
 
         Optional<Track> trackData = musicRepository.findById(id);
 
-        if (trackData.isPresent()) {
-            return new ResponseEntity<>(trackData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+        return new ResponseEntity<>(trackData.get(), HttpStatus.OK);
     }
 
-    @PostMapping("/posts")
+    @GetMapping("/track/title/{title}")
+    public ResponseEntity<List<Track>> getTrackByTitle(@PathVariable("title") String title) {
+
+        List<Track> trackData = musicRepository.findByTitle(title);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(trackData, HttpStatus.OK);
+    }
+
+    @GetMapping("/track/artist/{artist}")
+    public ResponseEntity<List<Track>> getTrackByArtist(@PathVariable("artist") String artist) {
+
+        List<Track> trackData = musicRepository.findByArtist(artist);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(trackData, HttpStatus.OK);
+    }
+
+    @GetMapping("/track/genre/{genre}")
+    public ResponseEntity<List<Track>> getTrackByGenre(@PathVariable("genre") String genre) {
+
+        List<Track> trackData = musicRepository.findByGenre(genre);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(trackData, HttpStatus.OK);
+    }
+
+    @GetMapping("/track/releaseYear/{releaseYear}")
+    public ResponseEntity<List<Track>> getTrackByReleaseYear(@PathVariable("releaseYear") Integer releaseYear) {
+
+        List<Track> trackData = musicRepository.findByReleaseYear(releaseYear);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(trackData, HttpStatus.OK);
+    }
+
+    @GetMapping("/track/filename/{filename}")
+    public ResponseEntity<List<Track>> getTrackByFilename(@PathVariable("filename") String filename) {
+
+        List<Track> trackData = musicRepository.findByFilename(filename);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(trackData, HttpStatus.OK);
+    }
+
+    @GetMapping("/track/medium/{medium}")
+    public ResponseEntity<List<Track>> getTrackByMedium(@PathVariable("medium") String medium) {
+
+        List<Track> trackData = musicRepository.findByMedium(medium);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(trackData, HttpStatus.OK);
+    }
+
+    @PostMapping("/track")
     public ResponseEntity<Track> createTrack(@RequestBody Track track) {
 
         try {
@@ -65,7 +137,7 @@ public class MusicController {
                             track.getReleaseYear(),
                             track.getFilename(),
                             track.getMedium()
-                            ));
+                    ));
 
             return new ResponseEntity<>(_track, HttpStatus.CREATED);
 

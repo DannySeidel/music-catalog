@@ -11,4 +11,11 @@ public interface MusicRepository extends JpaRepository<Track, Long> {
 
     List<Track> findByArtist(String artist);
 
+    List<Track> findByGenre(String genre);
+
+    List<Track> findByReleaseYear(Integer releaseYear);
+
+    List<Track> findByMedium(String medium);
+
+    List<Track> findByFilename(String filename);
 }
