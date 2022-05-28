@@ -40,6 +40,16 @@ public class MusicController {
         }
     }
 
+    @DeleteMapping("/tracks")
+    public ResponseEntity<HttpStatus> deleteAllTracks() {
+        try {
+            musicRepository.deleteAll();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/track/{id}")
     public ResponseEntity<Track> getTrackById(@PathVariable("id") long id) {
 
@@ -50,6 +60,43 @@ public class MusicController {
         }
 
         return new ResponseEntity<>(trackData.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/track/{id}")
+    public ResponseEntity<Track> updateTrack(@PathVariable("id") long id, @RequestBody Track track) {
+
+        Optional<Track> trackData = musicRepository.findById(id);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        Track currentTrack = trackData.get();
+
+        currentTrack.setTitle(track.getTitle());
+        currentTrack.setArtist(track.getArtist());
+        currentTrack.setGenre(track.getGenre());
+        currentTrack.setReleaseYear(track.getReleaseYear());
+        currentTrack.setFilename(track.getFilename());
+        currentTrack.setMedium(track.getMedium());
+
+        musicRepository.save(currentTrack);
+
+        return new ResponseEntity<>(currentTrack, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/track/{id}")
+    public ResponseEntity<Track> deleteTrack(@PathVariable("id") long id) {
+
+        Optional<Track> trackData = musicRepository.findById(id);
+
+        if (trackData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        musicRepository.deleteById(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/track/title/{title}")
